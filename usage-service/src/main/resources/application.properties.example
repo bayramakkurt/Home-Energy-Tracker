@@ -7,7 +7,7 @@ spring.kafka.bootstrap-servers=localhost:9094
 spring.kafka.consumer.group-id=usage-service
 spring.kafka.consumer.key-deserializer=org.apache.kafka.common.serialization.StringDeserializer
 spring.kafka.consumer.value-deserializer=org.springframework.kafka.support.serializer.JsonDeserializer
-spring.kafka.consumer.properties.spring.json.type.mapping=energyUsageEvent:com.hba.kafka.event.EnergyUsageEvent
+spring.kafka.consumer.properties.spring.json.type.mapping=energyUsageEvent:${PACKAGE_NAME:com.hba}.kafka.event.EnergyUsageEvent  # Proje paket adı
 
 # Kafka Producer Configuration
 spring.kafka.template.default-topic=energy-alerts
@@ -16,8 +16,8 @@ spring.kafka.producer.value-serializer=org.springframework.kafka.support.seriali
 
 # InfluxDB Time-Series Database Configuration
 influx.url=http://localhost:8072
-influx.token=my-token
-influx.org=hba
+influx.token=${INFLUX_TOKEN:my-token}  # InfluxDB API token (ÜRETİMDE DEĞİŞTİRİN!)
+influx.org=${INFLUX_ORG:hba}  # InfluxDB organizasyon adı
 influx.bucket=usage-bucket
 
 # External Service URLs

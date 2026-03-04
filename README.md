@@ -223,6 +223,20 @@ cp insight-service/src/main/resources/application.properties.example \
 
 > **Not:** Üretim ortamında `application.properties` dosyalarındaki şifre, token ve diğer hassas bilgileri mutlaka değiştirin.
 
+**Yapılandırma Değişkenleri:**
+
+`.example` dosyalarındaki değerler `${VARIABLE_NAME:default_value}` formatında tanımlanmıştır. Bu değerleri ortam değişkenleri ile veya doğrudan dosyada değiştirerek özelleştirebilirsiniz:
+
+- `${DB_USERNAME:root}` - Veritabanı kullanıcı adı (varsayılan: root)
+- `${DB_PASSWORD:password}` - Veritabanı şifresi (**üretimde değiştirin!**)
+- `${INFLUX_TOKEN:my-token}` - InfluxDB API token (**üretimde değiştirin!**)
+- `${INFLUX_ORG:hba}` - InfluxDB organizasyon adı
+- `${PACKAGE_NAME:com.hba}` - Proje paket adı (Kafka type mapping için)
+- `${SENDER_EMAIL:template@example.com}` - E-posta gönderen adresi
+- `${OLLAMA_MODEL:deepseek-coder}` - Kullanılacak AI modeli
+- `${OLLAMA_URL:http://localhost:11434}` - Ollama sunucu adresi
+- `${USAGE_SERVICE_URL:http://localhost:8083/api/v1/usage}` - Usage Service API adresi
+
 ### Adım 3: Altyapı Servislerini Başlatma
 
 Docker Compose ile MySQL, Kafka, InfluxDB ve Mailpit servislerini başlatın:

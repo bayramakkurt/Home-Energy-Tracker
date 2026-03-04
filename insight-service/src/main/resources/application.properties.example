@@ -3,10 +3,10 @@ spring.application.name=insight-service
 server.port=8085
 
 # External Service URLs
-usage.service.url=http://localhost:8083/api/v1/usage
+usage.service.url=${USAGE_SERVICE_URL:http://localhost:8083/api/v1/usage}  # Usage Service API adresi
 
 # Ollama AI Configuration
-spring.ai.ollama.chat.options.model=deepseek-coder
+spring.ai.ollama.chat.options.model=${OLLAMA_MODEL:deepseek-coder}  # Kullanılacak AI modeli
 spring.ai.ollama.init.pull-model-strategy=never
-spring.ai.ollama.base-url=http://localhost:11434
-spring.ai.ollama.chat.options.timeout=180s
+spring.ai.ollama.base-url=${OLLAMA_URL:http://localhost:11434}  # Ollama sunucu adresi
+spring.ai.ollama.chat.options.timeout=180s  # AI istek timeout süresi (saniye)

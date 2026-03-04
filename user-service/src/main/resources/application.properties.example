@@ -4,8 +4,8 @@ server.port=8080
 
 # MySQL Database Configuration
 spring.datasource.url=jdbc:mysql://localhost:3306/home-energy-tracker
-spring.datasource.username=root
-spring.datasource.password=password
+spring.datasource.username=${DB_USERNAME:root}  # Veritabanı kullanıcı adı
+spring.datasource.password=${DB_PASSWORD:password}  # Veritabanı şifresi (ÜRETİMDE DEĞİŞTİRİN!)
 spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
 spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
 spring.jpa.hibernate.ddl-auto=none

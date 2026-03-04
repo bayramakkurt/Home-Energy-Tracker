@@ -9,7 +9,7 @@ spring.kafka.producer.key-serializer=org.apache.kafka.common.serialization.Strin
 spring.kafka.producer.value-serializer=org.springframework.kafka.support.serializer.JsonSerializer
 
 # Continuous Simulation Configuration
-simulation.endpoint=http://localhost:8082/api/v1/ingestion
-simulation.requests-per-interval=10000
-simulation.interval-ms=60000
-simulation.parallel-threads=10
+simulation.endpoint=${SIMULATION_ENDPOINT:http://localhost:8082/api/v1/ingestion}  # Simülasyon endpoint adresi
+simulation.requests-per-interval=10000  # Dakikada gönderilecek istek sayısı
+simulation.interval-ms=60000  # Simülasyon aralığı (milisaniye)
+simulation.parallel-threads=10  # Paralel thread sayısı
