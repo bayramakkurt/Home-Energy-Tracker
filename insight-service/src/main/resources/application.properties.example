@@ -1,0 +1,12 @@
+# Insight Service Configuration
+spring.application.name=insight-service
+server.port=8085
+
+# External Service URLs
+usage.service.url=http://localhost:8083/api/v1/usage
+
+# Ollama AI Configuration
+spring.ai.ollama.chat.options.model=deepseek-coder
+spring.ai.ollama.init.pull-model-strategy=never
+spring.ai.ollama.base-url=http://localhost:11434
+spring.ai.ollama.chat.options.timeout=180s
