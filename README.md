@@ -193,6 +193,18 @@ cd home-energy-tracker
 
 ### Adım 2: Yapılandırma Dosyalarını Hazırlama
 
+**a) Ortam Değişkenlerini Ayarlama (Opsiyonel)**
+
+Merkezi yapılandırma için `.env` dosyası oluşturun:
+
+```bash
+cp .env.example .env
+```
+
+`.env` dosyasındaki değerleri düzenleyin. Bu dosya hem docker-compose hem de application.properties dosyaları tarafından kullanılabilir.
+
+**b) Servis Yapılandırma Dosyalarını Oluşturma**
+
 Her servis için `application.properties` dosyasını oluşturun:
 
 ```bash
@@ -227,15 +239,18 @@ cp insight-service/src/main/resources/application.properties.example \
 
 `.example` dosyalarındaki değerler `${VARIABLE_NAME:default_value}` formatında tanımlanmıştır. Bu değerleri ortam değişkenleri ile veya doğrudan dosyada değiştirerek özelleştirebilirsiniz:
 
-- `${DB_USERNAME:root}` - Veritabanı kullanıcı adı (varsayılan: root)
-- `${DB_PASSWORD:password}` - Veritabanı şifresi (**üretimde değiştirin!**)
-- `${INFLUX_TOKEN:my-token}` - InfluxDB API token (**üretimde değiştirin!**)
-- `${INFLUX_ORG:hba}` - InfluxDB organizasyon adı
+- `${DB_USERNAME:root}` - MySQL veritabanı kullanıcı adı
+- `${DB_PASSWORD:password}` - MySQL veritabanı şifresi (**üretimde değiştirin!**)
+- `${INFLUX_TOKEN:my-token}` - InfluxDB API token (docker-compose: `DOCKER_INFLUXDB_INIT_ADMIN_TOKEN`)
+- `${INFLUX_ORG:leetjourney}` - InfluxDB organizasyon adı (docker-compose: `DOCKER_INFLUXDB_INIT_ORG`)
+- `${INFLUX_BUCKET:usage-bucket}` - InfluxDB bucket adı (docker-compose: `DOCKER_INFLUXDB_INIT_BUCKET`)
 - `${PACKAGE_NAME:com.hba}` - Proje paket adı (Kafka type mapping için)
 - `${SENDER_EMAIL:template@example.com}` - E-posta gönderen adresi
 - `${OLLAMA_MODEL:deepseek-coder}` - Kullanılacak AI modeli
 - `${OLLAMA_URL:http://localhost:11434}` - Ollama sunucu adresi
 - `${USAGE_SERVICE_URL:http://localhost:8083/api/v1/usage}` - Usage Service API adresi
+
+> **Önemli:** InfluxDB ayarları (`INFLUX_TOKEN`, `INFLUX_ORG`, `INFLUX_BUCKET`) `docker-compose.yml` dosyasındaki değerlerle eşleşmelidir.
 
 ### Adım 3: Altyapı Servislerini Başlatma
 
@@ -243,6 +258,25 @@ Docker Compose ile MySQL, Kafka, InfluxDB ve Mailpit servislerini başlatın:
 
 ```bash
 docker-compose up -d
+```
+
+**Docker Compose Değişkenleri:**
+
+Docker Compose otomatik olarak proje kök dizinindeki `.env` dosyasını yükler. `.env.example` dosyasını `.env` olarak kopyalayıp değerleri özelleştirin:
+
+```bash
+# .env dosyası örneği (Adım 2a'da oluşturuldu)
+MYSQL_ROOT_PASSWORD=güvenli_şifre
+MYSQL_DATABASE=home-energy-tracker
+INFLUX_TOKEN=güvenli_token
+INFLUX_ORG=leetjourney
+INFLUX_BUCKET=usage-bucket
+```
+
+Alternatif olarak, komut satırından ortam değişkenlerini atayabilirsiniz:
+
+```bash
+MYSQL_ROOT_PASSWORD=my_password docker-compose up -d
 ```
 
 Çalışan servisler:

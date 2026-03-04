@@ -4,8 +4,8 @@ services:
     container_name: mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: home-energy-tracker
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-password} # MySQL root şifresi (ÜRETİMDE DEĞİŞTİRİN!)
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-home-energy-tracker} # Veritabanı adı
     ports:
       - "3306:3306"
     volumes:
@@ -26,17 +26,17 @@ services:
       # Unique ID for this Kafka node
       KAFKA_NODE_ID: 1
       # Unique Kafka cluster identifier (required for KRaft mode)
-      KAFKA_CLUSTER_ID: 'energy-tracker-cluster-1'
+      KAFKA_CLUSTER_ID: "energy-tracker-cluster-1"
       # Node roles — this instance will act as BOTH a broker and controller
-      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_PROCESS_ROLES: "broker,controller"
 
       ############################################
       # Controller Quorum Configuration (Raft)
       ############################################
       # List of controller nodes that form the Raft quorum
-      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:9093'
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
       # Listener name used by controllers for internal Raft communication
-      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
 
       ############################################
       # Network Listeners (Internal, External & Controller)
@@ -61,7 +61,7 @@ services:
         EXTERNAL:PLAINTEXT
 
       # Which listener brokers should use for internal communication
-      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_INTER_BROKER_LISTENER_NAME: "PLAINTEXT"
 
       ############################################
       #  Single-Node Cluster Safety Settings
@@ -77,7 +77,7 @@ services:
       # Speed up consumer group startup
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       # Auto-create topics if they don't already exist
-      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       # Default number of partitions per topic
       KAFKA_NUM_PARTITIONS: 1
 
@@ -93,8 +93,8 @@ services:
       - kafka
     environment:
       KAFKA_CLUSTERS_0_NAME: local
-      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092  # Use internal Docker network name
-      DYNAMIC_CONFIG_ENABLED: 'true'
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9092 # Use internal Docker network name
+      DYNAMIC_CONFIG_ENABLED: "true"
     restart: unless-stopped
 
   influxdb:
@@ -104,12 +104,12 @@ services:
       - "8072:8086"
     environment:
       - DOCKER_INFLUXDB_INIT_MODE=setup
-      - DOCKER_INFLUXDB_INIT_USERNAME=admin
-      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
-      - DOCKER_INFLUXDB_INIT_ORG=leetjourney
-      - DOCKER_INFLUXDB_INIT_BUCKET=usage-bucket
+      - DOCKER_INFLUXDB_INIT_USERNAME=${INFLUX_ADMIN_USERNAME:-admin} # InfluxDB admin kullanıcı adı
+      - DOCKER_INFLUXDB_INIT_PASSWORD=${INFLUX_ADMIN_PASSWORD:-admin123} # InfluxDB admin şifresi (ÜRETİMDE DEĞİŞTİRİN!)
+      - DOCKER_INFLUXDB_INIT_ORG=${INFLUX_ORG:-hba} # InfluxDB organizasyon adı (application.properties ile aynı olmalı)
+      - DOCKER_INFLUXDB_INIT_BUCKET=${INFLUX_BUCKET:-usage-bucket} # InfluxDB bucket adı (application.properties ile aynı olmalı)
       - DOCKER_INFLUXDB_INIT_RETENTION=1w
-      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=my-token
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=${INFLUX_TOKEN:-my-token} # InfluxDB API token (application.properties ile aynı olmalı, ÜRETİMDE DEĞİŞTİRİN!)
     volumes:
       - ./influxdb_data:/var/lib/influxdb2
 

@@ -17,8 +17,8 @@ spring.kafka.producer.value-serializer=org.springframework.kafka.support.seriali
 # InfluxDB Time-Series Database Configuration
 influx.url=http://localhost:8072
 influx.token=${INFLUX_TOKEN:my-token}  # InfluxDB API token (ÜRETİMDE DEĞİŞTİRİN!)
-influx.org=${INFLUX_ORG:hba}  # InfluxDB organizasyon adı
-influx.bucket=usage-bucket
+influx.org=${INFLUX_ORG:hba}  # InfluxDB organizasyon adı (docker-compose'daki DOCKER_INFLUXDB_INIT_ORG ile aynı olmalı)
+influx.bucket=${INFLUX_BUCKET:usage-bucket}  # InfluxDB bucket adı
 
 # External Service URLs
 device.service.url=http://localhost:8081/api/v1/device
